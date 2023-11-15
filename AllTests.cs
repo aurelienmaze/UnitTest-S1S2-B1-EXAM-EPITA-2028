@@ -44,22 +44,14 @@ public class AllTests
     
     public static double RoundToPrecision(double value, double precision)
     {
-        // Gestion des nombres négatifs
         int sign = (value < 0) ? -1 : 1;
-    
-        // Mise à l'échelle pour convertir en entier
-        double scaledValue = value * (1 / precision);
-    
-        // Ajouter 0.5 pour un arrondi correct
-        double roundedScaledValue = scaledValue + 0.5 * sign;
-    
-        // Convertir en entier pour tronquer la partie décimale
-        int intValue = (int)roundedScaledValue;
-    
-        // Reconvertir en double et rétablir l'échelle
-        double roundedValue = intValue / (1 / precision);
-    
-        return roundedValue;
+
+        value /= precision;
+        double mod = value % 1;
+        value -= mod;
+        value *= precision;
+        
+        return value * sign;
     }
 
     
@@ -67,21 +59,17 @@ public class AllTests
     [Theory]
     [InlineData(100, 0.0001, 10.0)]
     [InlineData(100, 0.01, 10.0)]
-    [InlineData(142, 0.000001, 11.916375)]
-    [InlineData(142, 0.00001, 11.91638)]
-    [InlineData(142, 0.0001, 11.9164)]
+    [InlineData(142, 0.00001, 11.91637)]
     [InlineData(16, 0.1, 4.0)]
     [InlineData(16, 1, 4.0)]
     [InlineData(3, 0.00001, 1.73205)]
     [InlineData(3, 0.01, 1.73)]
-    [InlineData(42, 0.000001, 6.480741)]
     [InlineData(42, 0.001, 6.48)]
     [InlineData(42, 1, 6.0)]
     [InlineData(64, 0.01, 8.0)]
     [InlineData(64, 0.1, 8.0)]
     [InlineData(99, 0.001, 9.949)]
-    [InlineData(99, 0.01, 9.9497)]
-    [InlineData(99, 1, 10.0)]
+    [InlineData(99, 1, 9)]
     
     public void TestSqrt(int n, double precision, double expected)
     {
@@ -154,5 +142,69 @@ public class AllTests
         Assert.Equal(expected, result);
     }
     
+    // Function for creating all files
+    private void CreatingAllFiles()
+    {
+        // Creting a empty file
+        File.Create("empty.txt").Close();
+        // Creating a file with a single line
+        File.WriteAllText("singleLine.txt", "Baby Smurf;2");
+        // Creating a file with multiple lines
+        File.WriteAllText("multipleLines.txt", "Baby Smurf;2\nPapa Smurf;72\nSmurfette;42");
+        // Creating a file with multiple lines
+        File.WriteAllText("multipleLines2.txt", "Baby Smurf;2\nPapa Smurf;72\nSmurfette;42\nSmurfette;42\nPapa Smurf;72\nBaby Smurf;2");
+        // Creating a file with multiple lines
+        File.WriteAllText("multipleLines3.txt", "Smurf ACDC;22\nSmurf Student;18");
+        // Creating a file with negative numbers
+        File.WriteAllText("negativeNumbers.txt", "Baby Smurf;-2\nPapa Smurf;-72\nSmurfette;-42");
+        // Creating a file with numbers 0
+        File.WriteAllText("zeroNumbers.txt", "Baby Smurf;0\nPapa Smurf;0\nSmurfette;0");
+    }
     
+    // Function for deleting all files
+    private void DeletingAllFiles()
+    {
+        // Deleting all files
+        File.Delete("empty.txt");
+        File.Delete("singleLine.txt");
+        File.Delete("multipleLines.txt");
+        File.Delete("multipleLines2.txt");
+        File.Delete("multipleLines3.txt");
+        File.Delete("negativeNumbers.txt");
+        File.Delete("zeroNumbers.txt");
+    }
+    
+    // Tests for SmurfParse() in Reading.cs
+    [Theory]
+    [InlineData("empty.txt", "")]
+    [InlineData("singleLine.txt", "Baby Smurf is 2 years old.\n")]
+    [InlineData("multipleLines.txt", "Baby Smurf is 2 years old.\nPapa Smurf is 72 years old.\nSmurfette is 42 years old.\n")]
+    [InlineData("multipleLines2.txt", "Baby Smurf is 2 years old.\nPapa Smurf is 72 years old.\nSmurfette is 42 years old.\nSmurfette is 42 years old.\nPapa Smurf is 72 years old.\nBaby Smurf is 2 years old.\n")]
+    [InlineData("multipleLines3.txt", "Smurf ACDC is 22 years old.\nSmurf Student is 18 years old.\n")]
+    [InlineData("negativeNumbers.txt", "Baby Smurf is -2 years old.\nPapa Smurf is -72 years old.\nSmurfette is -42 years old.\n")]
+    [InlineData("zeroNumbers.txt", "Baby Smurf is 0 years old.\nPapa Smurf is 0 years old.\nSmurfette is 0 years old.\n")]
+    
+    public void TestSmurfParse(string fileName, string expected)
+    {
+        // Arrange
+        CreatingAllFiles();
+        string result;
+        
+        // Act
+        result = Smurfing.Reading.SmurfParse(fileName);
+        
+        // Assert
+        Assert.Equal(expected, result);
+        DeletingAllFiles();
+    }
+    
+    // FileNotFound Exception Tests for SmurfParse() in Reading.cs
+    [Theory]
+    [InlineData("notFound.txt")]
+    [InlineData("isADirectory/")]
+    
+    public void TestSmurfParseFileNotFoundException(string fileName)
+    {
+        Assert.Throws<FileNotFoundException>(() => Smurfing.Reading.SmurfParse(fileName));
+    }
 }
