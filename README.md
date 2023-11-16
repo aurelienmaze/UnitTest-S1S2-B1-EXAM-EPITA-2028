@@ -8,9 +8,9 @@ Ces tests ne sont pas destinés à servir de ShareCode ni à remplacer vos fonct
 
 ### 📦 Installation
 
-Pour installer ces tests unitaires, vous devez créer un projet `Tests` dans votre solution, si ce n'est pas déjà fait. Ce projet sert à exécuter des tests xUnit.
+Pour installer ces tests unitaires, vous devez créer un projet `Tests` dans votre solution, si ce n'est pas déjà fait. Ce projet sert à exécuter des tests xUnit. Ajoutez y une référence à votre projet Smurfing en faisant `CLIQUE DROIT` sur `Tests`, puis `Réference`, cochez Smurfing puis validez.
 
-Une fois cela fait, ajoutez à ce projet un fichier C# nommé `AllTests.cs` et copiez le code contenu dans le fichier du même nom (le code et le nom de fichier doivent être absolument identiques à ce qui a été donné): [Cliquez ici pour y accéder](https://github.com/aurelienmaze/UnitTest-S1S2-B1-EXAM-EPITA-2028/blob/main/AllTests.cs).
+Une fois cela fait, supprimez le fichier `UnitTest1.cs` puis ajoutez à `Tests` un fichier C# nommé `AllTests.cs` et copiez le code contenu dans le fichier du même nom (le code et le nom de fichier doivent être absolument identiques à ce qui a été donné): [Cliquez ici pour y accéder](https://github.com/aurelienmaze/UnitTest-S1S2-B1-EXAM-EPITA-2028/blob/main/AllTests.cs).
 
 ### ⌨️ Utilisation
 
@@ -19,6 +19,12 @@ Une fois le code ajouté à votre projet, il vous suffit d'exécuter les tests u
 ### 🛠️ Problèmes d'utilisation
 
 Le code correspond normalement à la dernière version de la moulinette (les tests ne pouvant pas tester votre architecture). Cependant, si vous détectez une erreur potentielle, merci de créer une issue en cliquant sur ce lien : [Github Issue](https://github.com/aurelienmaze/UnitTest-S1S2-B1-EXAM-EPITA-2028/issues/new).
+
+**Mes tests ne s'executent pas :**
+Ce problème provient sûrement du module `xUnit`. Dans ce cas, `CLIQUE DROIT` sur `Tests` puis `Reload Project`. Si cela ne fonctionne pas, redémarrez Rider.
+
+**Les tests s'affichent tous en orange :**
+Cette erreur est souvent dû à une boucle infinie dans l'une de vos fonctions.
 
 ### 📒 Droits
 
